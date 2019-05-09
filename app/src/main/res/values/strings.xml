@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Churrascator</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_people">People</string>
+    <string name="man">Man</string>
+    <string name="woman">Woman</string>
+    <string name="children">Children</string>
+    <string name="title_meats">Meats</string>
+    <string name="maminha">Maminha</string>
+    <string name="picanha">Picanha</string>
+    <string name="title_drinks">Drinks</string>
+    <string name="soda">Soda</string>
+    <string name="juice">Juice</string>
+    <string name="beer">Beer</string>
+    <string name="title_others">Others</string>
+    <string name="seasoned_toasted_manioc_flour">Seasoned toasted manioc flour</string>
+    <string name="manioc">Manioc</string>
+    <string name="rice">Rice</string>
+    <string name="vinaigrette">Vinaigrette</string>
+    <string name="napkin">Napkin</string>
+    <string name="disposable_cups">Disposable cups</string>
+    <string name="dispoable_plates_and_cutlery">Disposable plates and cutlery</string>
+    <string name="resetDB">Reset DB</string>
+    <string name="clear">Clear</string>
+    <string name="calculate">Calculate</string>
+</resources>

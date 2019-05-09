@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Churrascator</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notificações</string>
+    <string name="title_people">Pessoas</string>
+    <string name="man">Homens</string>
+    <string name="woman">Mulheres</string>
+    <string name="children">Crianças</string>
+    <string name="title_meats">Carnes</string>
+    <string name="maminha">Maminha</string>
+    <string name="picanha">Picanha</string>
+    <string name="title_drinks">Bebidas</string>
+    <string name="soda">Refrigerante</string>
+    <string name="juice">Suco</string>
+    <string name="beer">Cerveja</string>
+    <string name="title_others">Outros</string>
+    <string name="seasoned_toasted_manioc_flour">Farofa</string>
+    <string name="manioc">Mandioca</string>
+    <string name="rice">Arrox</string>
+    <string name="vinaigrette">Vinagrete</string>
+    <string name="napkin">Guardanapo</string>
+    <string name="disposable_cups">Copos descartáveis</string>
+    <string name="dispoable_plates_and_cutlery">Pratos e talheres descartáveis</string>
+    <string name="resetDB">Resetar DB</string>
+    <string name="clear">Limpar</string>
+    <string name="calculate">Calcular</string>
+</resources>

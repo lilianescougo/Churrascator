@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     int currentMenuItemID;
 
+    public static final String PREFS_NAME = "MyPrefsFile";
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -200,6 +201,19 @@ public class MainActivity extends AppCompatActivity {
         // Get singleton instance of database
         DBHelper databaseHelper = DBHelper.getInstance(this);
         dbController = new DBController(databaseHelper);
+
+        //Cria a tabela, se for a primeira vez que abre o aplicativo
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean openAppforTheFirstTime = settings.getBoolean("openAppforTheFirstTime", true);
+        if(openAppforTheFirstTime) {
+            //guarda que já abriu o app
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("openAppforTheFirstTime", false);
+            editor.commit();
+            //cria a tabela vazia
+            dbController.resetData(getApplicationContext());
+        }
+
 
         //inicializa a primeira tela
         currentMenuItemID = R.id.navigation_people;

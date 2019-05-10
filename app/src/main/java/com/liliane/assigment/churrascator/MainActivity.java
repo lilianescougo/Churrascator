@@ -1,6 +1,7 @@
 package com.liliane.assigment.churrascator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -213,5 +214,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void calculateButton(View view) {
+        Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+        Bundle b = new Bundle();
+        b.putString("umaString", "Olá");
+        intent.putExtra("stringBundle", b);
+        intent.putExtra("mensagem", "Mundo");
+        intent.putExtra("umBoolean", true);
+        intent.putExtra("umInteiro", 5);
+        startActivity(intent);
+
     }
 }

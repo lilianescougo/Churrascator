@@ -37,14 +37,15 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_clear_black_24dp"
-                android:onClick="clearButton"/>
+                android:onClick="backButton"
+                android:src="@drawable/baseline_arrow_back_ios_black_24dp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/clear" />
+                android:text="@string/backButton" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,14 +56,14 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_done_black_24dp"
-                android:onClick="calculateButton"/>
+                android:src="@drawable/baseline_share_black_24dp"
+                android:onClick="shareResultButton"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/calculate" />
+                android:text="@string/shareResultButton" />
         </LinearLayout>
 
     </LinearLayout>

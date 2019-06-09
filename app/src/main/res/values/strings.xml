@@ -25,4 +25,8 @@
     <string name="resetDB">Reset DB</string>
     <string name="clear">Clear</string>
     <string name="calculate">Calculate</string>
+    <string name="backButton">Back</string>
+    <string name="shareResultButton">Share</string>
+    <string name="functionWasNotImplementedYet">Function was not implemented yet :(</string>
+    <string name="pleaseSelectAtLeastOnePerson">Please select at least one person.</string>
 </resources>

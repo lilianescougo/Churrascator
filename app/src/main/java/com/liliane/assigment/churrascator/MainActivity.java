@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        public boolean onNavigationItemSelected(MenuItem item) {
 
             return displayViewForID(item.getItemId());
 
@@ -230,13 +229,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void calculateButton(View view) {
         Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-        Bundle b = new Bundle();
-        b.putString("umaString", "Olá");
-        intent.putExtra("stringBundle", b);
-        intent.putExtra("mensagem", "Mundo");
-        intent.putExtra("umBoolean", true);
-        intent.putExtra("umInteiro", 5);
+        intent.putExtra("resultString", calculateResult());
         startActivity(intent);
+    }
 
+    private String calculateResult() {
+        String resultString = "Please select at least one person.";
+        List<People> people = dbController.getPeopleList();
+        if(people.size() == 0) {
+            return resultString;
+        }
+        return resultString;
     }
 }

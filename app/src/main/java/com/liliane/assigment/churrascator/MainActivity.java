@@ -242,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
         double totalKg = homem.getQuantity()*homem.getEats() +
                 mulher.getQuantity()*mulher.getEats() +
                 crianca.getQuantity() * crianca.getEats();
-        totalKg = oneDecimal(totalKg);
 
         //Calcula carne
         if (!picanha.isChecked() && !maminha.isChecked()){
@@ -273,6 +272,10 @@ public class MainActivity extends AppCompatActivity {
                 mandiocaKg *= 0.5;
             }
         }
+        picanhaKg = oneDecimal(picanhaKg);
+        maminhaKg = oneDecimal(maminhaKg);
+        mandiocaKg = oneDecimal(mandiocaKg);
+        arrozKg = oneDecimal(arrozKg);
 
         //calcula bebidas
         double refrigeranteMl = 0, cervejaMl = 0 ;

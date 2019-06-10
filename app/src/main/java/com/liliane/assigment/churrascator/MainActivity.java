@@ -78,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
             cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String msg = "You have " + (isChecked ? "checked" : "unchecked") + " : " + buttonView.getTag().toString()
-                            + String.format(", id: %d", buttonView.getId());
-                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    //TODO fazer funcionar a persistencia do isChecked
                     dbController.updateGroceryItemIsChecked(groceryItem.getId(), isChecked);
                 }
             });
@@ -123,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
 
             ImageButton imageImageButton = new ImageButton(context);
             imageImageButton.setLayoutParams(lp);
-//            imageImageButton.setBackgroundColor(Color.TRANSPARENT);
             switch (person.getId()) {
                 case 1:
                     imageImageButton.setImageResource(R.drawable.icons8_farmer_48);
@@ -139,12 +134,9 @@ public class MainActivity extends AppCompatActivity {
             ImageButton decrementBtn = new ImageButton(context);
             decrementBtn.setImageResource(R.drawable.baseline_arrow_back_ios_black_24dp);
             decrementBtn.setLayoutParams(lp);
-//            decrementBtn.setBackgroundColor(Color.TRANSPARENT);
             decrementBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String msg = "clicou em decrement";
-                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     int value = Integer.parseInt(tvValue.getText().toString());
                     if(value > 0 ){
                         value --;
@@ -160,12 +152,9 @@ public class MainActivity extends AppCompatActivity {
             //botão incrementar
             ImageButton incrementBtn = new ImageButton(context);
             incrementBtn.setImageResource(R.drawable.baseline_arrow_forward_ios_black_24dp);
-//            incrementBtn.setBackgroundColor(Color.TRANSPARENT);
             incrementBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String msg = "clicou em increment";
-                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     int value = Integer.parseInt(tvValue.getText().toString());
                     if(value < 5000 ){
                         value ++;
@@ -234,11 +223,88 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String calculateResult() {
-        String resultString = "Please select at least one person.";
+        double maminhaKg = 0, picanhaKg = 0, arrozKg = 0, mandiocaKg = 0;
+
+        //Recupera as pessoas em variáveis  mais fáceis de trabalhar
+        People homem = new People(), mulher = new People(), crianca = new People();
         List<People> people = dbController.getPeopleList();
-        if(people.size() == 0) {
-            return resultString;
+        homem = people.get(0);
+        mulher = people.get(1);
+        crianca = people.get(2);
+        if((homem.getQuantity() == 0) && (mulher.getQuantity() == 0) && (crianca.getQuantity() == 0)) {
+            return getString(R.string.pleaseSelectAtLeastOnePerson);
         }
+
+        List<GroceryItem> carne = dbController.getAllGroceryItemsfromSession(GroceryItem.SESSION_MEATS);
+        GroceryItem maminha = carne.get(0);
+        GroceryItem picanha  = carne.get(1);
+
+        List<GroceryItem> bebida = dbController.getAllGroceryItemsfromSession(GroceryItem.SESSION_DRINKS);
+        GroceryItem refrigerante = bebida.get(0);
+        GroceryItem cerveja = bebida.get(1);
+
+        List<GroceryItem> guarnicao = dbController.getAllGroceryItemsfromSession(GroceryItem.SESSION_OTHERS);
+        GroceryItem mandioca = guarnicao.get(0);
+        GroceryItem arroz = guarnicao.get(1);
+
+        double totalKg = homem.getQuantity()*homem.getEats() +
+                mulher.getQuantity()*mulher.getEats() +
+                crianca.getQuantity() * crianca.getEats();
+
+        //Calcula carne
+        if (!picanha.isChecked() && !maminha.isChecked()){
+                return getString(R.string.noMeatError);
+        }
+        if(maminha.isChecked()) {
+            maminhaKg = totalKg;
+        }
+        if(picanha.isChecked()) {
+            picanhaKg = totalKg;;
+        }
+        if(maminha.isChecked() && picanha.isChecked()){
+            maminhaKg *= 0.7;
+            picanhaKg *= 0.3;
+        }
+
+        if(mandioca.isChecked()) {
+            mandiocaKg = totalKg * 0.4;
+        }
+
+        if (arroz.isChecked()) {
+            arrozKg = totalKg * 0.5;
+
+            if(maminhaKg != 0) maminhaKg /= 2;
+            if(picanhaKg != 0) picanhaKg /= 2;
+            if(mandioca.isChecked()) {
+                arrozKg *= 0.6;
+                mandiocaKg *= 0.5;
+            }
+        }
+
+        double totalPrice = 0 ;
+        String resultString = "<b>Churrascator - Calculadora de churrasco</b> \n";
+        if (homem.getQuantity() > 0) resultString += getString(R.string.man) + homem.getQuantity() + "\n";
+        if (mulher.getQuantity() > 0) resultString += getString(R.string.woman) + mulher.getQuantity() + "\n";
+        if (crianca.getQuantity() > 0) resultString += getString(R.string.children) + crianca.getQuantity() + "\n";
+        resultString += "<b>Lista de compras</b> \n";
+        if(maminhaKg > 0 ) {
+            totalPrice += maminhaKg * maminha.getPrice();
+            resultString += getString(R.string.maminha) + ": " + maminhaKg  + " kg ("+ getString(R.string.price) + ": " + maminhaKg * maminha.getPrice() + ")\n";
+        }
+        if(picanhaKg > 0 ) {
+            totalPrice += picanhaKg * picanha.getPrice();
+            resultString += getString(R.string.picanha) + ": " + picanhaKg  + " kg ("+ getString(R.string.price) + ": " + picanhaKg * picanha.getPrice() + ")\n";
+        }
+        if(arrozKg > 0 ) {
+            totalPrice += arrozKg * arroz.getPrice();
+            resultString += getString(R.string.rice) + ": " + arrozKg  + " kg ("+ getString(R.string.price) + ": " + arrozKg * arroz.getPrice() + ")\n";
+        }
+        if(mandiocaKg > 0 ) {
+            totalPrice += mandiocaKg * mandioca.getPrice();
+            resultString += getString(R.string.manioc) + ": " + mandiocaKg + " kg ("+ getString(R.string.price) + ": " + mandiocaKg * mandioca.getPrice() + ")\n";
+        }
+        resultString += getString(R.string.totalPrice) + ": " + totalPrice;
+
         return resultString;
     }
 }

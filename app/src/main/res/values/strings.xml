@@ -29,4 +29,7 @@
     <string name="shareResultButton">Share</string>
     <string name="functionWasNotImplementedYet">Function was not implemented yet :(</string>
     <string name="pleaseSelectAtLeastOnePerson">Please select at least one person.</string>
+    <string name="noMeatError">Please select a meat type.</string>
+    <string name="price">Price</string>
+    <string name="totalPrice">Total Price</string>
 </resources>

@@ -14,6 +14,10 @@ public class People {
         this.eats = eats;
         this.drinks = drinks;
     }
+
+    public People() {
+    }
+
     public int getId() {
         return id;
     }

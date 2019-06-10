@@ -30,33 +30,29 @@ public class DBController {
     private void initializeData(Context context) {
         //prepare default people and groceries
         Resources res = context.getResources();
-        People man = new People(0, res.getString(R.string.man), 0, 0.9, 1.5);
-        People woman = new People(1, res.getString(R.string.woman), 0, 0.6, 1.5);
-        People children = new People(2, res.getString(R.string.children), 0, 0.3, 0.6);
+        People man = new People(0, res.getString(R.string.man), 0, 0.5, 1.5);
+        People woman = new People(1, res.getString(R.string.woman), 0, 0.5, 1.5);
+        People children = new People(2, res.getString(R.string.children), 0, 0.25, 0.6);
 
         ArrayList<People> people = new ArrayList<>();
         people.add(man);
         people.add(woman);
         people.add(children);
 
-        // Create sample data
-        GroceryItem maminha = new GroceryItem(res.getString(R.string.maminha), false, 25, GroceryItem.SESSION_MEATS);
-        GroceryItem picanha = new GroceryItem(res.getString(R.string.picanha), false, 35, GroceryItem.SESSION_MEATS);
-        GroceryItem soda = new GroceryItem(res.getString(R.string.soda), true, 4, GroceryItem.SESSION_DRINKS);
+        GroceryItem maminha = new GroceryItem(res.getString(R.string.maminha), false, 22.67, GroceryItem.SESSION_MEATS);
+        GroceryItem picanha = new GroceryItem(res.getString(R.string.picanha), false, 33.5, GroceryItem.SESSION_MEATS);
+        GroceryItem soda = new GroceryItem(res.getString(R.string.soda), true, 6, GroceryItem.SESSION_DRINKS);
         soda.setVolume(2000);
-        GroceryItem beer = new GroceryItem(res.getString(R.string.beer), true, 3, GroceryItem.SESSION_DRINKS);
+        GroceryItem beer = new GroceryItem(res.getString(R.string.beer), true, 8, GroceryItem.SESSION_DRINKS);
         beer.setVolume(1000);
-        GroceryItem juice = new GroceryItem(res.getString(R.string.juice), true, 3, GroceryItem.SESSION_DRINKS);
-        beer.setVolume(1000);
-        GroceryItem manioc = new GroceryItem(res.getString(R.string.manioc), false, 4, GroceryItem.SESSION_OTHERS);
-        GroceryItem rice = new GroceryItem(res.getString(R.string.rice), false, 1, GroceryItem.SESSION_OTHERS);
+        GroceryItem manioc = new GroceryItem(res.getString(R.string.manioc), false, 7, GroceryItem.SESSION_OTHERS);
+        GroceryItem rice = new GroceryItem(res.getString(R.string.rice), false, 3.59, GroceryItem.SESSION_OTHERS);
 
         ArrayList<GroceryItem> groceryItems = new ArrayList<>();
         groceryItems.add(maminha);
         groceryItems.add(picanha);
         groceryItems.add(soda);
         groceryItems.add(beer);
-        groceryItems.add(juice);
         groceryItems.add(manioc);
         groceryItems.add(rice);
 

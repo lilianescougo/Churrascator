@@ -71,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_PEOPLE_TABLE = "CREATE TABLE " + TABLE_PEOPLE +
                 "(" +
-                KEY_PEOPLE_ID + " INTEGER PRIMARY KEY, " +
+                KEY_PEOPLE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_PEOPLE_NAME + " TEXT, " +
                 KEY_PEOPLE_QUANTITY + " INTEGER, " +
                 KEY_PEOPLE_EATS + " REAL, " +
@@ -80,7 +80,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String CREATE_GROCERIES_TABLE = "CREATE TABLE " + TABLE_GROCERIES +
                 "(" +
-                KEY_GROCERIES_ID + " INTEGER PRIMARY KEY, " +
+                KEY_GROCERIES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_GROCERIES_NAME + " TEXT, " +
                 KEY_GROCERIES_IS_UNITARY + " INTEGER, " +
                 KEY_GROCERIES_VOLUME + " REAL, " +

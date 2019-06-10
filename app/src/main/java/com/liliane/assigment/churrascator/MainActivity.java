@@ -223,10 +223,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String calculateResult() {
-        double maminhaKg = 0, picanhaKg = 0, arrozKg = 0, mandiocaKg = 0;
-
-        //Recupera as pessoas em variáveis  mais fáceis de trabalhar
-        People homem = new People(), mulher = new People(), crianca = new People();
+        People homem, mulher, crianca;
         List<People> people = dbController.getPeopleList();
         homem = people.get(0);
         mulher = people.get(1);
@@ -235,13 +232,12 @@ public class MainActivity extends AppCompatActivity {
             return getString(R.string.pleaseSelectAtLeastOnePerson);
         }
 
+        //Calcula carne e guarnição, se houver arroz a quantidade de carne cai pela metade.
+        double maminhaKg = 0, picanhaKg = 0, arrozKg = 0, mandiocaKg = 0;
+
         List<GroceryItem> carne = dbController.getAllGroceryItemsfromSession(GroceryItem.SESSION_MEATS);
         GroceryItem maminha = carne.get(0);
         GroceryItem picanha  = carne.get(1);
-
-        List<GroceryItem> bebida = dbController.getAllGroceryItemsfromSession(GroceryItem.SESSION_DRINKS);
-        GroceryItem refrigerante = bebida.get(0);
-        GroceryItem cerveja = bebida.get(1);
 
         List<GroceryItem> guarnicao = dbController.getAllGroceryItemsfromSession(GroceryItem.SESSION_OTHERS);
         GroceryItem mandioca = guarnicao.get(0);
@@ -281,29 +277,67 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //calcula bebidas
+        double refrigeranteMl = 0, cervejaMl = 0 ;
+        List<GroceryItem> bebida = dbController.getAllGroceryItemsfromSession(GroceryItem.SESSION_DRINKS);
+        GroceryItem refrigerante = bebida.get(0);
+        GroceryItem cerveja = bebida.get(1);
+
+        if(refrigerante.isChecked() && !cerveja.isChecked()) {
+            refrigeranteMl = homem.getQuantity() * homem.getDrinks() +
+                    mulher.getQuantity() * mulher.getDrinks() +
+                    crianca.getQuantity() * mulher.getDrinks();
+        }
+
+        if(!refrigerante.isChecked() && cerveja.isChecked()) {
+            cervejaMl = homem.getQuantity() * homem.getDrinks() +
+                    mulher.getQuantity() * mulher.getDrinks();
+        }
+
+
         double totalPrice = 0 ;
-        String resultString = "<b>Churrascator - Calculadora de churrasco</b> \n";
-        if (homem.getQuantity() > 0) resultString += getString(R.string.man) + homem.getQuantity() + "\n";
-        if (mulher.getQuantity() > 0) resultString += getString(R.string.woman) + mulher.getQuantity() + "\n";
-        if (crianca.getQuantity() > 0) resultString += getString(R.string.children) + crianca.getQuantity() + "\n";
-        resultString += "<b>Lista de compras</b> \n";
+        String kgOf = " Kg " + getString(R.string.of) + " ";
+        String L_Of = " L " + getString(R.string.of) + " ";
+        String resultString = "Churrascator - Calculadora de churrasco \n\n";
+        resultString += "\n" + getString(R.string.peopleList) + "\n";
+        if (homem.getQuantity() > 0) resultString += homem.getName() + ": " +  homem.getQuantity() + "\n";
+        if (mulher.getQuantity() > 0) resultString += mulher.getName() + ": " +  mulher.getQuantity() + "\n";
+        if (crianca.getQuantity() > 0) resultString += crianca.getName() + ": " +  crianca.getQuantity() + "\n";
+        resultString += "\n" + getString(R.string.groceryList) + "\n";
         if(maminhaKg > 0 ) {
-            totalPrice += maminhaKg * maminha.getPrice();
-            resultString += getString(R.string.maminha) + ": " + maminhaKg  + " kg ("+ getString(R.string.price) + ": " + maminhaKg * maminha.getPrice() + ")\n";
+            double maminhaTotalPrice = maminhaKg * maminha.getPrice();
+            totalPrice += maminhaTotalPrice;
+            resultString += maminhaKg + kgOf + maminha.getName() + " (" + getString(R.string.price) + ": " + maminhaTotalPrice + ")\n";
         }
         if(picanhaKg > 0 ) {
-            totalPrice += picanhaKg * picanha.getPrice();
-            resultString += getString(R.string.picanha) + ": " + picanhaKg  + " kg ("+ getString(R.string.price) + ": " + picanhaKg * picanha.getPrice() + ")\n";
+            double picanhaTotalPrice = picanhaKg * picanha.getPrice();;
+            totalPrice += picanhaTotalPrice;
+            resultString += picanhaKg + kgOf + picanha.getName() + " (" + getString(R.string.price) + ": " + picanhaTotalPrice + ")\n";
         }
         if(arrozKg > 0 ) {
-            totalPrice += arrozKg * arroz.getPrice();
-            resultString += getString(R.string.rice) + ": " + arrozKg  + " kg ("+ getString(R.string.price) + ": " + arrozKg * arroz.getPrice() + ")\n";
+            double arrozTotalPrice = arrozKg * arroz.getPrice();;
+            totalPrice += arrozTotalPrice;
+            resultString += picanhaKg + kgOf + arroz.getName() + " (" + getString(R.string.price) + ": " + arrozTotalPrice + ")\n";
         }
         if(mandiocaKg > 0 ) {
-            totalPrice += mandiocaKg * mandioca.getPrice();
-            resultString += getString(R.string.manioc) + ": " + mandiocaKg + " kg ("+ getString(R.string.price) + ": " + mandiocaKg * mandioca.getPrice() + ")\n";
+            double mandiocaTotalPrice = mandiocaKg * mandioca.getPrice();
+            totalPrice += mandiocaTotalPrice;
+            resultString += mandiocaKg + kgOf + mandioca.getName() + " (" + getString(R.string.price) + ": " + mandiocaTotalPrice + ")\n";
         }
-        resultString += getString(R.string.totalPrice) + ": " + totalPrice;
+
+        if(refrigeranteMl > 0 ) {
+            double refrigeranteTotalPrice = refrigeranteMl * refrigerante.getPrice();
+            totalPrice += refrigeranteTotalPrice;
+            resultString += refrigeranteMl/1000 + L_Of + refrigerante.getName() + " (" + getString(R.string.price) + ": " + refrigeranteTotalPrice + ")\n";
+        }
+
+        if(cervejaMl > 0 ) {
+            double cervejaTotalPrice = cervejaMl * cerveja.getPrice();
+            totalPrice += cervejaTotalPrice;
+            resultString += cervejaMl/1000 + L_Of + mandioca.getName() + " (" + getString(R.string.price) + ": " + cervejaTotalPrice + ")\n";
+        }
+
+        resultString += "\n" + getString(R.string.totalPrice) + ": " + totalPrice;
 
         return resultString;
     }

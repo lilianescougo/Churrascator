@@ -21,9 +21,9 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     public void shareResultButton(View view) {
-        Toast toast = new Toast(getApplicationContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setText(R.string.functionWasNotImplementedYet);
+        String texto = getString(R.string.functionWasNotImplementedYet);
+        Toast toast = Toast.makeText(getApplicationContext(), texto, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public void backButton(View view) {

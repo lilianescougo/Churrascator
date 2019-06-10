@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -112,11 +113,6 @@ public class MainActivity extends AppCompatActivity {
             tvValue.setLayoutParams(lp);
             tvValue.setTextSize(40);
 
-            //textviwe com a identificação
-            TextView tvName = new TextView(context);
-            tvName.setLayoutParams(lp);
-            tvName.setText("(" + person.getName()+ ")");
-
             ImageButton imageImageButton = new ImageButton(context);
             imageImageButton.setLayoutParams(lp);
             switch (person.getId()) {
@@ -168,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
             //montar ll horizontal e add no ll vertical
             llhorizontal.addView(imageImageButton);
-            llhorizontal.addView(tvName);
             llhorizontal.addView(decrementBtn);
             llhorizontal.addView(tvValue);
             llhorizontal.addView(incrementBtn);
@@ -228,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         homem = people.get(0);
         mulher = people.get(1);
         crianca = people.get(2);
+
         if((homem.getQuantity() == 0) && (mulher.getQuantity() == 0) && (crianca.getQuantity() == 0)) {
             return getString(R.string.pleaseSelectAtLeastOnePerson);
         }
@@ -246,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
         double totalKg = homem.getQuantity()*homem.getEats() +
                 mulher.getQuantity()*mulher.getEats() +
                 crianca.getQuantity() * crianca.getEats();
+        totalKg = oneDecimal(totalKg);
 
         //Calcula carne
         if (!picanha.isChecked() && !maminha.isChecked()){
@@ -286,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         if(refrigerante.isChecked() && !cerveja.isChecked()) {
             refrigeranteMl = homem.getQuantity() * homem.getDrinks() +
                     mulher.getQuantity() * mulher.getDrinks() +
-                    crianca.getQuantity() * mulher.getDrinks();
+                    crianca.getQuantity() * crianca.getDrinks();
         }
 
         if(!refrigerante.isChecked() && cerveja.isChecked()) {
@@ -294,51 +291,76 @@ public class MainActivity extends AppCompatActivity {
                     mulher.getQuantity() * mulher.getDrinks();
         }
 
+        if(refrigerante.isChecked() && cerveja.isChecked()) {
+            refrigeranteMl = homem.getQuantity() * homem.getDrinks() * 0.1;
+            refrigeranteMl += mulher.getQuantity() * mulher.getDrinks() * 0.7;
+            refrigeranteMl += crianca.getQuantity() * crianca.getDrinks();
+
+            cervejaMl = homem.getQuantity() * homem.getDrinks() * 0.9;
+            cervejaMl += mulher.getQuantity() * mulher.getDrinks() * 0.3;
+        }
+
 
         double totalPrice = 0 ;
         String kgOf = " Kg " + getString(R.string.of) + " ";
         String L_Of = " L " + getString(R.string.of) + " ";
         String resultString = "Churrascator - Calculadora de churrasco \n\n";
-        resultString += "\n" + getString(R.string.peopleList) + "\n";
+        resultString += getString(R.string.peopleList) + "\n";
         if (homem.getQuantity() > 0) resultString += homem.getName() + ": " +  homem.getQuantity() + "\n";
         if (mulher.getQuantity() > 0) resultString += mulher.getName() + ": " +  mulher.getQuantity() + "\n";
         if (crianca.getQuantity() > 0) resultString += crianca.getName() + ": " +  crianca.getQuantity() + "\n";
         resultString += "\n" + getString(R.string.groceryList) + "\n";
         if(maminhaKg > 0 ) {
-            double maminhaTotalPrice = maminhaKg * maminha.getPrice();
+            double maminhaTotalPrice = twoDecimals( maminhaKg * maminha.getPrice());
             totalPrice += maminhaTotalPrice;
             resultString += maminhaKg + kgOf + maminha.getName() + " (" + getString(R.string.price) + ": " + maminhaTotalPrice + ")\n";
         }
         if(picanhaKg > 0 ) {
-            double picanhaTotalPrice = picanhaKg * picanha.getPrice();;
+            double picanhaTotalPrice = twoDecimals(picanhaKg * picanha.getPrice());
             totalPrice += picanhaTotalPrice;
             resultString += picanhaKg + kgOf + picanha.getName() + " (" + getString(R.string.price) + ": " + picanhaTotalPrice + ")\n";
         }
         if(arrozKg > 0 ) {
-            double arrozTotalPrice = arrozKg * arroz.getPrice();;
+            double arrozTotalPrice = twoDecimals(arrozKg * arroz.getPrice());
             totalPrice += arrozTotalPrice;
             resultString += picanhaKg + kgOf + arroz.getName() + " (" + getString(R.string.price) + ": " + arrozTotalPrice + ")\n";
         }
         if(mandiocaKg > 0 ) {
-            double mandiocaTotalPrice = mandiocaKg * mandioca.getPrice();
+            double mandiocaTotalPrice = twoDecimals(mandiocaKg * mandioca.getPrice());
             totalPrice += mandiocaTotalPrice;
             resultString += mandiocaKg + kgOf + mandioca.getName() + " (" + getString(R.string.price) + ": " + mandiocaTotalPrice + ")\n";
         }
 
         if(refrigeranteMl > 0 ) {
-            double refrigeranteTotalPrice = refrigeranteMl * refrigerante.getPrice();
+            double refrigeranteTotalPrice = twoDecimals(refrigeranteMl * refrigerante.getPrice());
             totalPrice += refrigeranteTotalPrice;
-            resultString += refrigeranteMl/1000 + L_Of + refrigerante.getName() + " (" + getString(R.string.price) + ": " + refrigeranteTotalPrice + ")\n";
+            resultString += refrigeranteMl + L_Of + refrigerante.getName() + " (" + getString(R.string.price) + ": " + refrigeranteTotalPrice + ")\n";
         }
 
         if(cervejaMl > 0 ) {
-            double cervejaTotalPrice = cervejaMl * cerveja.getPrice();
+            double cervejaTotalPrice = twoDecimals(cervejaMl * cerveja.getPrice());
             totalPrice += cervejaTotalPrice;
-            resultString += cervejaMl/1000 + L_Of + mandioca.getName() + " (" + getString(R.string.price) + ": " + cervejaTotalPrice + ")\n";
+            resultString += cervejaMl + L_Of + cerveja.getName() + " (" + getString(R.string.price) + ": " + cervejaTotalPrice + ")\n";
         }
 
         resultString += "\n" + getString(R.string.totalPrice) + ": " + totalPrice;
 
         return resultString;
+    }
+    public static double twoDecimals(double precoDouble) {
+        DecimalFormat fmt = new DecimalFormat("0.00");
+        String string = fmt.format(precoDouble);
+        String[] part = string.split("[,]");
+        String string2 = part[0]+"."+part[1];
+        double preco = Double.parseDouble(string2);
+        return preco;
+    }
+    public static double oneDecimal(double weightDouble) {
+        DecimalFormat fmt = new DecimalFormat("0.0");
+        String string = fmt.format(weightDouble);
+        String[] part = string.split("[,]");
+        String string2 = part[0]+"."+part[1];
+        double weight = Double.parseDouble(string2);
+        return weight;
     }
 }
